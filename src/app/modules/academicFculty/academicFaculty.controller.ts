@@ -24,11 +24,34 @@ const getAllAcademicFaculty = catchAsync(async(req,res) => {
         data: result,
     })
 })
-const getSinfleAcademicFaculty = cat
+const getSingleAcademicFaculty = catchAsync(async(req,res) => {
+    const {facultyId} = req.params;
+    const result = await AcademicFacultyServices.getSingleAcademicFacultyFromDB(facultyId);
 
+    sendResponse(res,{
+        statusCode:httpStatus.OK,
+        success: true,
+        message:'Single Academic Faculty retrieve successfully',
+        data: result,
+    })
+})
+
+
+const updateAcademicFaculty = catchAsync(async(req,res) => {
+    const {facultyId} = req.params;
+    const result = await AcademicFacultyServices.updateAcademicFacultyFromDB(facultyId,req.body);
+    sendResponse(res,{
+        statusCode: httpStatus.OK,
+        success: true,
+        message:'Academic Faculty Updated Successfully',
+        data: result
+    })
+})
 export const AcademicFacultyController = {
     createAcademicFaculty,
     getAllAcademicFaculty,
+    getSingleAcademicFaculty,
+    updateAcademicFaculty
 
 
 }
