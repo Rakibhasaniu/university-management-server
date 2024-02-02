@@ -15,12 +15,16 @@ const getAllStudentsFromDB = async () => {
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-  const result = await Student.findById(id).populate('admissionSemester').populate({
+  const result = await Student.findOne({ id }).populate('admissionSemester').populate({
     path:'academicDepartment',
     populate:{
       path:'academicfaculty'
     }
   });
+  return result;
+};
+const updateStudentIntoDB = async (id: string,payload) => {
+  const result = await Student.findOne({ id })
   return result;
 };
 
@@ -62,4 +66,5 @@ export const StudentServices = {
   getAllStudentsFromDB,
   getSingleStudentFromDB,
   deleteStudentFromDB,
+  updateStudentIntoDB
 };
