@@ -5,8 +5,24 @@ import httpStatus from 'http-status';
 import { User } from '../user/user.model';
 import { TStudent } from './student.interface';
 
-const getAllStudentsFromDB = async () => {
-  const result = await Student.find().populate('admissionSemester').populate({
+const getAllStudentsFromDB = async (query: Record<string,unknown>) => {
+
+  const studentSearchAbleField = ['email','name.firstName','presentAddress'];
+
+  let searchTerm='';
+  if(query?.searchTerm){
+    searchTerm=query?.searchTerm as string;
+  }
+
+  const searchQuery = Student.find(
+    {
+      $or:studentSearchAbleField.map((field) => ({
+        [field] : {$regex: searchTerm,$options: 'i'},
+      }))
+    }
+  )
+
+  const result = await searchQuery.find(query).populate('admissionSemester').populate({
     path:'academicDepartment',
     populate:{
       path:'academicfaculty'
