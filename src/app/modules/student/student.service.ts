@@ -60,16 +60,21 @@ const getAllStudentsFromDB = async (query: Record<string,unknown>) => {
   // }
   // const fieldQuery = await limitQuery.select(fields)
   // return fieldQuery;
-  console.log('rakib')
-  const studentQuery = new QueryBuilder(Student.find(),query).search(studentSearchAbleField).filter().sort().paginate().fields();
+  // console.log('rakib')
+  const studentQuery = new QueryBuilder(Student.find().populate('admissionSemester').populate({
+      path:'academicDepartment',
+      populate:{
+        path:'academicfaculty'
+      }
+     }),query).search(studentSearchAbleField).filter().sort().paginate().fields();
   const result = await studentQuery.modelQuery
-  console.log(result)
+  // console.log(result)
   return result;
 
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-  const result = await Student.findOne({ id }).populate('admissionSemester').populate({
+  const result = await Student.findById( id ).populate('admissionSemester').populate({
     path:'academicDepartment',
     populate:{
       path:'academicfaculty'
@@ -99,7 +104,7 @@ const updateStudentIntoDB = async (id: string,payload:Partial<TStudent>) => {
   }
 
 
-  const result = await Student.findOneAndUpdate({ id },modifiedUpdatedData,{new: true, runValidators: true})
+  const result = await Student.findByIdAndUpdate( id ,modifiedUpdatedData,{new: true, runValidators: true})
   return result;
 };
 
@@ -108,16 +113,18 @@ const deleteStudentFromDB = async (id: string) => {
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
-    const result = await Student.findOneAndUpdate(
-      { id },
+    const deleteStudent = await Student.findByIdAndUpdate(
+       id ,
       { isDeleted: true },
       {new: true, session},
        );
-       if(!result){
+       if(!deleteStudent){
         throw new AppError(httpStatus.BAD_REQUEST,'Failed to delete student')
        }
-    const deleteUser = await User.findOneAndUpdate({
-      id},
+
+       const userId = deleteStudent.user
+    const deleteUser = await User.findByIdAndUpdate(
+      userId,
       { isDeleted: true },
       {new: true, session},
       );
@@ -127,7 +134,7 @@ const deleteStudentFromDB = async (id: string) => {
 
        await session.commitTransaction();
        await session.endSession();
-    return result;
+    return deleteStudent;
   } catch (err) {
 
     await session.abortTransaction();
