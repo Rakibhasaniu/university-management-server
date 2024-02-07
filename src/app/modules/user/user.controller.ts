@@ -41,7 +41,7 @@ const createAdmin = catchAsync(async (req, res) => {
 });
 const createFaculty = catchAsync(async (req, res) => {
   const { password, faculty: facultyData } = req.body;
-
+  console.log(req.body)
   const result = await UserServices.createFacultyIntoDB(password, facultyData);
   console.log(result)
   sendResponse(res, {

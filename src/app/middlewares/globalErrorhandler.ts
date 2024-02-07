@@ -28,14 +28,13 @@ const globalErrorHandler:ErrorRequestHandler = (
   }]
   
 
-
   if(err instanceof ZodError){
     const simplifiedError = handleZodError(err)
-
+    console.log(simplifiedError)
     statusCode = simplifiedError?.statusCode;
     message=simplifiedError?.message;
     errorSources=simplifiedError?.errorSources
-    
+
   } else if(err?.name === 'ValidationError'){
     const simplifiedError = handleValidationError(err);
     statusCode=simplifiedError.statusCode;
@@ -60,12 +59,13 @@ const globalErrorHandler:ErrorRequestHandler = (
         message: err?.message,
       },
     ];
-  return res.status(statusCode).json({
-    success: false,
-    message,
-    errorSources,
-    stack: config.NODE_ENV === 'development' ? err?.stack : null,
-  });
-};
+  
+}
+return res.status(statusCode).json({
+  success: false,
+  message,
+  errorSources,
+  stack: config.NODE_ENV === 'development' ? err?.stack : null,
+});
 }
 export default globalErrorHandler;
