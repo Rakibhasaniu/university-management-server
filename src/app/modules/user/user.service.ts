@@ -60,7 +60,7 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   } catch(err){
     await session.abortTransaction();
     await session.endSession();
-    throw new AppError(httpStatus.BAD_REQUEST,err)
+    throw new AppError(httpStatus.BAD_REQUEST,'err')
 
   }
 };
@@ -118,7 +118,7 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
   const academicDepartment = await AcademicDepartment.findById(
     payload.academicDepartment,
   );
-    console.log(academicDepartment)
+    // console.log(academicDepartment)
   if (!academicDepartment) {
     throw new AppError(400, 'Academic department not found');
   }

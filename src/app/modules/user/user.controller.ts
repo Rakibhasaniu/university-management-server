@@ -7,7 +7,7 @@ const createStudent = catchAsync(async (
   req,
   res,
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next,
+  
 ) => {
 
     const { password, student: studentData } = req.body;
@@ -41,9 +41,9 @@ const createAdmin = catchAsync(async (req, res) => {
 });
 const createFaculty = catchAsync(async (req, res) => {
   const { password, faculty: facultyData } = req.body;
-  console.log(req.body)
+  // console.log(req.body)
   const result = await UserServices.createFacultyIntoDB(password, facultyData);
-  console.log(result)
+  // console.log(result)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
