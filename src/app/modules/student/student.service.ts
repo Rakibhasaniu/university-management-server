@@ -60,8 +60,7 @@ const getAllStudentsFromDB = async (query: Record<string,unknown>) => {
   // }
   // const fieldQuery = await limitQuery.select(fields)
   // return fieldQuery;
-  // console.log('rakib')
-  const studentQuery = new QueryBuilder(Student.find().populate('admissionSemester').populate({
+  const studentQuery = new QueryBuilder(Student.find().populate('user').populate('admissionSemester').populate({
       path:'academicDepartment',
       populate:{
         path:'academicfaculty'
