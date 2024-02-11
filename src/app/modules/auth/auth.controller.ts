@@ -32,3 +32,7 @@ export const AuthController = {
     loginUser,
     changePassword
 }
+export const AuthController = {
+    loginUser,
+    changePassword
+}
