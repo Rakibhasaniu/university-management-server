@@ -3,7 +3,7 @@ import config from "../config";
 
 
 
-export const sendEmail =async () => {
+export const sendEmail =async (to: string,html: string) => {
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -16,9 +16,9 @@ export const sendEmail =async () => {
       });
       await transporter.sendMail({
         from: 'rakibhasanoyoniu@gmail.com', // sender address
-        to: "rakibhasancse07@gmail.com", // list of receivers
-        subject: "Password Change", // Subject line
-        text: "Hello password vule geso?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        to, // list of receivers
+        subject: "Reset your password! within 10 minutes", // Subject line
+        text: "", // plain text body
+        html, // html body
       });
 }
