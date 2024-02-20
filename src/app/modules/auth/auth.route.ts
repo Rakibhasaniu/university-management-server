@@ -17,4 +17,8 @@ validateRequest(AuthValidation.changePasswordValidationSchema),AuthController.ch
 router.post('/refresh-token',validateRequest(AuthValidation.refreshTokenValidationSchema),AuthController.refreshToken)
 
 router.post('/forgot-password',validateRequest(AuthValidation.forgotPasswordValidationSchema),AuthController.forgotPasswordController)
+
+
+router.post('/reset-password',validateRequest(AuthValidation.resetPasswordValidationSchema),AuthController.resetPasswordController)
+
 export const AuthRoutes= router;
